@@ -1,6 +1,8 @@
-from flask import Flask, request
+from flask import Flask
+from verifier_authenticate import auth_bp
 
 app = Flask(__name__)
 
-if __name__ == '__main__':
-    app.run(debug=True)
+app.register_blueprint(auth_bp)
+
+app.run(debug=True)

@@ -1,5 +1,5 @@
 from flask import jsonify
-from app import app
+from flask import Blueprint
 import oauth2 as oauth
 import urllib.parse
 import os
@@ -11,7 +11,9 @@ request_token_url = os.getenv("REQUEST_TOKEN_URL")
 authenticate_url = os.getenv("AUTHENTICATE_URL")
 access_token_url = os.getenv("ACCESS_TOKEN_URL")
 
-@app.route('/authenticate', methods=['GET'])
+auth_bp = Blueprint('auth', __name__)
+
+@auth_bp.route('/authenticate', methods=['GET'])
 def authenticate():
     try:
         # Criando um cliente OAuth
@@ -34,4 +36,4 @@ def authenticate():
         # Retornando a oauth_verifier_url
         return jsonify({'oauth_verifier_url': oauth_verifier_url}), 200
     except Exception as e:
-        return jsonify({'error': str(e)}), 50
+        return jsonify({'error': str(e)}), 500
