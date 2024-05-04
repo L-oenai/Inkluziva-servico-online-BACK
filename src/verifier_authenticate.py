@@ -1,9 +1,7 @@
-from flask import jsonify
-from flask import Blueprint
+from flask import Blueprint, redirect
 import oauth2 as oauth
 import urllib.parse
 import os
-
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -37,7 +35,7 @@ def authenticate():
         
         print("Retornando URL de acesso...")
 
-        # Retornando a oauth_verifier_url
-        return jsonify({'oauth_verifier_url': oauth_verifier_url}), 200
+        # Redirecionar para a oauth_verifier_url
+        return redirect(oauth_verifier_url)
     except Exception as e:
-        return jsonify({'error': str(e)}), 500
+        return str(e), 500
