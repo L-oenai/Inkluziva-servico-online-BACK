@@ -38,6 +38,6 @@ def authenticate():
         print("Retornando URL de acesso...")
 
         # Redirecionar para a oauth_verifier_url
-        return redirect(oauth_verifier_url)
+        return oauth_verifier_url
     except Exception as e:
         return str(e), 500
