@@ -4,6 +4,10 @@ import oauth2 as oauth
 import urllib.parse
 import os
 
+from dotenv import load_dotenv
+
+load_dotenv()
+
 # Carregar variáveis de ambiente
 consumer_key = os.getenv("CONSUMER_KEY")
 consumer_secret = os.getenv("CONSUMER_SECRET")
