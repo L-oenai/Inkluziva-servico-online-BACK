@@ -2,6 +2,7 @@ from flask import Flask
 from src.verifier_authenticate import auth_bp
 from dotenv import load_dotenv
 from waitress import serve
+from flask_cors import CORS 
 import os
 
 load_dotenv()
@@ -12,6 +13,8 @@ mode = 'produt'  # Alterado para 'prod' para diferenciar entre desenvolvimento e
 
 app = Flask(__name__)
 app.register_blueprint(auth_bp)
+
+CORS(app, origins=['https://inkluziva-servio-online.netlify.app'])
 
 if __name__ == '__main__':
     if mode == 'dev':
