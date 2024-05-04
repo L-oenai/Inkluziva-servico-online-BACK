@@ -16,9 +16,9 @@ access_token_url = os.getenv("ACCESS_TOKEN_URL")
 
 auth_bp = Blueprint('auth', __name__)
 
-@auth_bp.route('/authenticate', methods=['GET'])
+@auth_bp.route('/proxy_authenticate', methods=['GET'])
 @cross_origin(origins=['https://inkluziva-servio-online.netlify.app', 'https://inkluziva-servio-online.netlify.app/register', 'http://localhost:5173'])
-def authenticate():
+def proxy_authenticate():
     try:
         # Criando um cliente OAuth
         consumer = oauth.Consumer(consumer_key, consumer_secret)
