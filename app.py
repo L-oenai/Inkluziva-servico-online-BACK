@@ -8,7 +8,7 @@ load_dotenv()
 
 port = os.getenv('PORT')
 
-mode = 'dev'  # Alterado para 'prod' para diferenciar entre desenvolvimento e produção
+mode = 'produt'  # Alterado para 'prod' para diferenciar entre desenvolvimento e produção
 
 app = Flask(__name__)
 app.register_blueprint(auth_bp)
