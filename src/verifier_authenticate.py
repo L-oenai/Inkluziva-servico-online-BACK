@@ -3,6 +3,7 @@ import oauth2 as oauth
 import urllib.parse
 import os
 from dotenv import load_dotenv
+from flask_cors import cross_origin
 
 load_dotenv()
 
@@ -16,6 +17,7 @@ access_token_url = os.getenv("ACCESS_TOKEN_URL")
 auth_bp = Blueprint('auth', __name__)
 
 @auth_bp.route('/authenticate', methods=['GET'])
+@cross_origin(origins=['https://inkluziva-servio-online.netlify.app', 'https://inkluziva-servio-online.netlify.app/register', 'http://localhost:5173'])
 def authenticate():
     try:
         # Criando um cliente OAuth
