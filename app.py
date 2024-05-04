@@ -14,7 +14,17 @@ mode = 'produt'  # Alterado para 'prod' para diferenciar entre desenvolvimento e
 app = Flask(__name__)
 app.register_blueprint(auth_bp)
 
-CORS(app)
+cors_config = {
+    "origins": [
+        "http://localhost:5173",
+        "https://inkluziva-servio-online.netlify.app/",
+        "https://inkluziva-servio-online.netlify.app/register"
+    ],  
+    "methods": ["GET", "POST"],
+    "allow_headers": ["Content-Type", "Authorization"]
+}
+
+CORS(app, resources={r"/*": cors_config})
 
 if __name__ == '__main__':
     if mode == 'dev':
