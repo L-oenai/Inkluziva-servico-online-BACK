@@ -1,5 +1,5 @@
 from flask import Flask
-from verifier_authenticate import auth_bp
+from src.verifier_authenticate import auth_bp
 
 app = Flask(__name__)
 
