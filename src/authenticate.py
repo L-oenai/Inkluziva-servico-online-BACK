@@ -47,7 +47,7 @@ print(oauth_verifier_url)
 
 oauth_verifier = input('Informe a chave de verificação: ')
 
-# Convertendo o oauth_verifier em o oauth_token de acesso
+# # Convertendo o oauth_verifier em o oauth_token de acesso
 token = oauth.Token(oauth_token, oauth_token_secret)
 token.set_verifier(oauth_verifier)
 client = oauth.Client(consumer, token)
