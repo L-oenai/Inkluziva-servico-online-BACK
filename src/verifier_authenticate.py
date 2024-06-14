@@ -2,7 +2,7 @@ from flask import Blueprint, redirect
 import oauth2 as oauth
 import urllib.parse
 import os
-import requests
+from requests import request
 from dotenv import load_dotenv
 from flask_cors import cross_origin
 
@@ -46,11 +46,11 @@ def authenticate():
     except Exception as e:
         return str(e), 500
 
-@auth_bp.route('/token', methods=['GET'])
 def token():
     try:
         # Receber o token do front end
-        token = requests.json.get('token')
+        data = request.json  # Usar request.json para acessar os dados do corpo da requisição
+        token = data.get('token')
 
         return {"message": "Token recebido com sucesso", "token": token}, 200
     except Exception as e:
