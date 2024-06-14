@@ -46,7 +46,7 @@ def authenticate():
     except Exception as e:
         return str(e), 500
 
-@auth_bp.route('/token', methods=['POST'])
+@auth_bp.route('/token', methods=['GET'])
 def token():
     try:
         # Receber o token do front end
