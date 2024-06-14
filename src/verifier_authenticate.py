@@ -45,7 +45,8 @@ def authenticate():
         return oauth_verifier_url
     except Exception as e:
         return str(e), 500
-    
+
+@auth_bp.route('/token', methods=['POST'])
 def token():
     try:
         # Receber o token do front end
