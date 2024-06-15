@@ -38,6 +38,8 @@ oauth_token_params = urllib.parse.parse_qs(content_oauth_token_str)
 oauth_token_params = {key: value[0] for key, value in oauth_token_params.items()}
 
 oauth_token = oauth_token_params['oauth_token']
+
+print(f"oauth_toke: {oauth_token}")
 oauth_token_secret = oauth_token_params['oauth_token_secret']
 
 # Gere o oauth_verifier

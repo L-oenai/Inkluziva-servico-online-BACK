@@ -46,12 +46,14 @@ def authenticate():
     except Exception as e:
         return str(e), 500
 
-def token():
-    try:
-        # Receber o token do front end
-        data = request.json  # Usar request.json para acessar os dados do corpo da requisição
-        token = data.get('token')
+# @auth_bp.route('/token', methods=['POST'])  # Alterado para POST
+# def token():
+#     try:
+#         # Receber o token do front end
+#         data = request.json  # Usar request.json para acessar os dados do corpo da requisição
+#         token = data.get('token')
 
-        return {"message": "Token recebido com sucesso", "token": token}, 200
-    except Exception as e:
-        return ({"error": str(e)}), 500
+#         return {"message": "Token recebido com sucesso", "token": token}, 200
+#     except Exception as e:
+#         return {"error": str(e)}, 500
+
