@@ -47,7 +47,6 @@ def authenticate():
         return str(e), 500
 
 @auth_bp.route('/token', methods=['POST'])  # Alterado para POST
-@cross_origin(origins=['https://inkluziva-servio-online.netlify.app', 'https://inkluziva-servio-online.netlify.app/register', 'http://localhost:5173', 'http://localhost:5173/register'])
 def token():
     try:
         # Receber o token do front end
