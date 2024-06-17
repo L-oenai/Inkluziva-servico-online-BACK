@@ -46,14 +46,15 @@ def authenticate():
     except Exception as e:
         return str(e), 500
 
-# @auth_bp.route('/token', methods=['POST'])  # Alterado para POST
-# def token():
-#     try:
-#         # Receber o token do front end
-#         data = request.json  # Usar request.json para acessar os dados do corpo da requisição
-#         token = data.get('token')
+@auth_bp.route('/token', methods=['POST'])  # Alterado para POST
+@cross_origin(origins=['https://inkluziva-servio-online.netlify.app', 'https://inkluziva-servio-online.netlify.app/register', 'http://localhost:5173', 'http://localhost:5173/register'])
+def token():
+    try:
+        # Receber o token do front end
+        data = request.json  # Usar request.json para acessar os dados do corpo da requisição
+        token = data.get('token')
 
-#         return {"message": "Token recebido com sucesso", "token": token}, 200
-#     except Exception as e:
-#         return {"error": str(e)}, 500
+        return {"message": "Token recebido com sucesso", "token": token}, 200
+    except Exception as e:
+        return {"error": str(e)}, 500
 
