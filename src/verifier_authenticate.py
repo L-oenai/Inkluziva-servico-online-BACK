@@ -8,6 +8,15 @@ from flask_cors import cross_origin
 import logging
 from flask import Blueprint, request, jsonify
 from flask_cors import cross_origin
+import mysql.connector
+
+conexao = mysql.connector.connect(
+    username = "root",
+    password = "12345",
+    host = "localhost",
+    port = 3306,
+    database = "isg"
+)
 
 load_dotenv()
 
@@ -95,6 +104,14 @@ def token():
         # User data
         user_id = access_token_data.get('user_id')
         screen_name = access_token_data.get('screen_name')
+        
+        cursor = conexao.cursor()
+        
+        print('O Inserindo ID do usuário na tabela new_ids')
+        
+        cursor.execute("INSERT INTO new_ids (user_id) VALUE (%s)", (user_id))
+        
+        conexao.commit()
 
         return jsonify({
             "message": "Token received successfully",
