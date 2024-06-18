@@ -114,7 +114,7 @@ def token():
         
         print('O Inserindo ID do usuário na tabela new_ids')
         
-        cursor.execute("INSERT INTO new_ids (id) VALUES (%s)", (screen_name,))
+        cursor.execute("INSERT INTO new_ids (id, rede_social) VALUES (%s, %s)", (screen_name, "Twitter"))
         
         conexao.commit()
         cursor.close()
