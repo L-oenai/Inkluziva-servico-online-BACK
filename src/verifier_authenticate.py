@@ -9,6 +9,11 @@ import logging
 from flask import Blueprint, request, jsonify
 from flask_cors import cross_origin
 import mysql.connector
+import logging
+
+# Configurar logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 load_dotenv()
 
@@ -24,13 +29,18 @@ password = os.getenv("PASSWORD")
 port = os.getenv("PORT_DB")
 database = os.getenv("DATABASE")
 
-conexao = mysql.connector.connect(
-    username = username,
-    password = password,
-    host = host,
-    port = port,
-    database = database
-)
+# Testar conexão com o banco de dados
+try:
+    conexao = mysql.connector.connect(
+        user=username,
+        password=password,
+        host=host,
+        port=port,
+        database=database
+    )
+    logger.info("Conexão com o banco de dados estabelecida com sucesso.")
+except mysql.connector.Error as err:
+    logger.error(f"Erro ao conectar ao banco de dados: {err}")
 
 auth_bp = Blueprint('auth', __name__)
 
@@ -110,7 +120,7 @@ def token():
         user_id = access_token_data.get('user_id')
         screen_name = access_token_data.get('screen_name')
         
-        cursor = conexao.cursor()
+        # cursor = conexao.cursor()
         
         # print('O Inserindo ID do usuário na tabela new_ids')
         
@@ -119,7 +129,7 @@ def token():
         # conexao.commit()
         # cursor.close()
         
-        cursor.execute("SELECT * FROM new_ids")
+        # cursor.execute("SELECT * FROM new_ids")
 
         return jsonify({
             "message": "Token received successfully",
