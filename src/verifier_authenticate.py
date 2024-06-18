@@ -5,6 +5,9 @@ import os
 from requests import request
 from dotenv import load_dotenv
 from flask_cors import cross_origin
+import logging
+from flask import Blueprint, request, jsonify
+from flask_cors import cross_origin
 
 load_dotenv()
 
@@ -46,15 +49,28 @@ def authenticate():
     except Exception as e:
         return str(e), 500
 
-@auth_bp.route('/token', methods=['POST'])  # Alterado para POST
-@cross_origin(origins=['https://inkluziva-servio-online.netlify.app', 'https://inkluziva-servio-online.netlify.app/register', 'http://localhost:5173', 'http://localhost:5173/register'])
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+@auth_bp.route('/token', methods=['POST'])
+@cross_origin(origins=[
+    'https://inkluziva-servio-online.netlify.app',
+    'https://inkluziva-servio-online.netlify.app/register',
+    'http://localhost:5173',
+    'http://localhost:5173/register'
+])
 def token():
     try:
-        # Receber o token do front end
-        data = request.json  # Usar request.json para acessar os dados do corpo da requisição
-        token = data.get('token')
+        data = request.json
+        if not data or 'token' not in data:
+            raise ValueError("Token is missing from the request")
 
-        return {"message": "Token recebido com sucesso", "token": token}, 200
+        token = data['token']
+        logger.info(f"Token received: {token}")
+
+        return jsonify({"message": "Token received successfully", "token": token}), 200
     except Exception as e:
-        return {"error": str(e)}, 500
+        logger.error(f"Error receiving token: {str(e)}", exc_info=True)
+        return jsonify({"error": "An error occurred while processing your request."}), 500
 
