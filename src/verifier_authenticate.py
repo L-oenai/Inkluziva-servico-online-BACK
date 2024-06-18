@@ -64,7 +64,7 @@ def token():
     try:
         consumer = oauth.Consumer(consumer_key, consumer_secret)
         client = oauth.Client(consumer)
-        
+
         data = request.json
         if not data or 'oauth_verifier' not in data or 'oauth_token' not in data:
             raise ValueError("oauth_verifier or oauth_token is missing from the request")
@@ -73,29 +73,25 @@ def token():
         oauth_token = data['oauth_token']
         logger.info(f"OAuth verifier received: {oauth_verifier}")
         logger.info(f"OAuth token received: {oauth_token}")
-        
-        resp_oauth_token, content_oauth_token = client.request(request_token_url, 'GET')
-        
-        content_oauth_token_str = content_oauth_token.decode('utf-8')
-        oauth_token_params = urllib.parse.parse_qs(content_oauth_token_str)
-        oauth_token_params = {key: value[0] for key, value in oauth_token_params.items()}
-        
-        oauth_token_secret = oauth_token_params['oauth_token_secret']
 
-        token = oauth.Token(oauth_token, oauth_token_secret)
+        # Step 1: Exchange oauth_verifier and oauth_token for oauth_token_secret
+        token = oauth.Token(oauth_token, "")
         token.set_verifier(oauth_verifier)
         client = oauth.Client(consumer, token)
-        
+
         resp_oauth_token_access, content_oauth_token_access = client.request(access_token_url, 'POST')
+        if resp_oauth_token_access['status'] != '200':
+            raise Exception('Failed to obtain access token: %s' % resp_oauth_token_access['status'])
 
         oauth_token_access_str = content_oauth_token_access.decode('utf-8')
         oauth_token_access_params = urllib.parse.parse_qs(oauth_token_access_str)
         oauth_token_access_params = {key: value[0] for key, value in oauth_token_access_params.items()}
 
-        user_name = oauth_token_access_params['screen_name']
+        user_name = oauth_token_access_params.get('screen_name')
+        if not user_name:
+            raise ValueError("Failed to retrieve the user name")
 
-        # return jsonify({"message": "Token received successfully", "oauth_verifier": oauth_verifier, "oauth_token": oauth_token}), 200
-        return jsonify({"message": "Token received successfully", "user name": user_name}), 200
+        return jsonify({"message": "Token received successfully", "user_name": user_name}), 200
     except Exception as e:
         logger.error(f"Error receiving token: {str(e)}", exc_info=True)
         return jsonify({"error": "An error occurred while processing your request."}), 500
