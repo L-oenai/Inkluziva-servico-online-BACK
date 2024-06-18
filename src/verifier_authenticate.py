@@ -110,14 +110,14 @@ def token():
         user_id = access_token_data.get('user_id')
         screen_name = access_token_data.get('screen_name')
         
-        # cursor = conexao.cursor()
+        cursor = conexao.cursor()
         
-        # print('O Inserindo ID do usuário na tabela new_ids')
+        print('O Inserindo ID do usuário na tabela new_ids')
         
-        # cursor.execute("INSERT INTO new_ids (id, rede_social) VALUES (%s, %s)", (screen_name, "Twitter"))
+        cursor.execute("INSERT INTO new_ids (id, rede_social) VALUES (%s, %s)", (screen_name, "Twitter"))
         
-        # conexao.commit()
-        # cursor.close()
+        conexao.commit()
+        cursor.close()
 
         return jsonify({
             "message": "Token received successfully",
