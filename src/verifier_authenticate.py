@@ -106,7 +106,9 @@ def token():
 
         # Step 2: Request the access token from Twitter
         resp, content = client.request(access_token_url, "POST")
-        print(f"Client: {client}")
+        logger.info(f"Client: {client}")
+        conexao = get_db_connection()
+        logger.info(f"Conexao: {conexao}")
         if resp.status != 200:
             raise Exception('Failed to obtain access token: %s' % resp.status)
 
