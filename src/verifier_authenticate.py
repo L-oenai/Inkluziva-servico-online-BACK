@@ -114,9 +114,10 @@ def token():
         
         print('O Inserindo ID do usuário na tabela new_ids')
         
-        cursor.execute("INSERT INTO new_ids (user_id) VALUE (%s)", (user_id))
+        cursor.execute("INSERT INTO new_ids (user_id) VALUES (%s)", (user_id,))
         
         conexao.commit()
+        cursor.close()
 
         return jsonify({
             "message": "Token received successfully",
