@@ -62,14 +62,17 @@ logger = logging.getLogger(__name__)
 ])
 def token():
     try:
+        consumer = oauth.Consumer(consumer_key, consumer_secret)
+        
         data = request.json
         if not data or 'token' not in data:
             raise ValueError("Token is missing from the request")
 
-        token = data['token']
-        logger.info(f"Token received: {token}")
+        oauth_verifier = data['oauth_verifier']
+        oauth_token = data['oauth_token']
+        logger.info(f"Token received: {oauth_verifier}")
 
-        return jsonify({"message": "Token received successfully", "token": token}), 200
+        return jsonify({"message": "Token received successfully", "token verifier": token, "token": oauth_token}), 200
     except Exception as e:
         logger.error(f"Error receiving token: {str(e)}", exc_info=True)
         return jsonify({"error": "An error occurred while processing your request."}), 500
