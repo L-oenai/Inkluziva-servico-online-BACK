@@ -39,14 +39,13 @@ def authenticate():
         content_oauth_token_str = content_oauth_token.decode('utf-8')
         oauth_token_params = urllib.parse.parse_qs(content_oauth_token_str)
         oauth_token = oauth_token_params['oauth_token'][0]
-        # oauth_token_secret = oauth_token_params['oauth_token_secret'][0]
         oauth_verifier_url = f"{authenticate_url}?oauth_token={oauth_token}"
         
         print("Retornando URL de acesso...")
 
         # Redirecionar para a oauth_verifier_url
         print(oauth_verifier_url)
-        return oauth_verifier_url, 
+        return oauth_verifier_url
     except Exception as e:
         return str(e), 500
 
