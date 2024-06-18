@@ -18,18 +18,18 @@ consumer_secret = os.getenv("CONSUMER_SECRET")
 request_token_url = os.getenv("REQUEST_TOKEN_URL")
 authenticate_url = os.getenv("AUTHENTICATE_URL")
 access_token_url = os.getenv("ACCESS_TOKEN_URL")
-HOST = os.getenv("HOST")
-USERNAME = os.getenv("USERNAME")
-PASSWORD = os.getenv("PASSWORD")
-PORT = os.getenv("PORT")
-DATABASES = os.getenv("DATABASES")
+host = os.getenv("HOST")
+username = os.getenv("USERNAME")
+password = os.getenv("PASSWORD")
+port = os.getenv("PORT")
+database = os.getenv("DATABASES")
 
 conexao = mysql.connector.connect(
-    username = USERNAME,
-    password = PASSWORD,
-    host = HOST,
-    port = PORT,
-    database = DATABASES
+    username = username,
+    password = password,
+    host = host,
+    port = port,
+    database = database
 )
 
 auth_bp = Blueprint('auth', __name__)
