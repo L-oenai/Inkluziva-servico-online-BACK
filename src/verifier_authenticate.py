@@ -29,20 +29,22 @@ password = os.getenv("PASSWORD")
 port = os.getenv("PORT_DB")
 database = os.getenv("DATABASE")
 
-# Testar conexão com o banco de dados
-try:
-    conexao = mysql.connector.connect(
-        user=username,
-        password=password,
-        host=host,
-        port=port,
-        database=database
-    )
-    logger.info("Conexão com o banco de dados estabelecida com sucesso.")
-except mysql.connector.Error as err:
-    logger.error(f"Erro ao conectar ao banco de dados: {err}")
-
 auth_bp = Blueprint('auth', __name__)
+
+def get_db_connection():
+    try:
+        conexao = mysql.connector.connect(
+            user=username,
+            password=password,
+            host=host,
+            port=port,
+            database=database
+        )
+        return conexao
+    except mysql.connector.Error as err:
+        logger.error(f"Erro ao conectar ao banco de dados: {err}")
+        raise
+
 
 @auth_bp.route('/authenticate', methods=['GET'])
 @cross_origin(origins=['https://inkluziva-servio-online.netlify.app', 'https://inkluziva-servio-online.netlify.app/register', 'http://localhost:5173', 'http://localhost:5173/register'])
@@ -120,16 +122,13 @@ def token():
         user_id = access_token_data.get('user_id')
         screen_name = access_token_data.get('screen_name')
         
-        # cursor = conexao.cursor()
-        
-        # print('O Inserindo ID do usuário na tabela new_ids')
-        
-        # cursor.execute("INSERT INTO new_ids (id, rede_social) VALUES (%s, %s)", (screen_name, "Twitter"))
-        
-        # conexao.commit()
-        # cursor.close()
-        
-        # cursor.execute("SELECT * FROM new_ids")
+        # Inserir screen_name no banco de dados
+        conexao = get_db_connection()
+        cursor = conexao.cursor()
+        cursor.execute("INSERT INTO new_ids (id, rede_social) VALUES (%s, %s)", (screen_name, "Twitter"))
+        conexao.commit()
+        cursor.close()
+        conexao.close()
 
         return jsonify({
             "message": "Token received successfully",
