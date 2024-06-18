@@ -120,15 +120,13 @@ def token():
         # cursor.close()
         
         cursor.execute("SELECT * FROM new_ids")
-        resultados = cursor.fetchall()
 
         return jsonify({
             "message": "Token received successfully",
             "access_token": access_token,
             "access_token_secret": access_token_secret,
             "user_id": user_id,
-            "screen_name": screen_name,
-            "tabela new_ids": resultados
+            "screen_name": screen_name
         }), 200
     except Exception as e:
         logger.error(f"Error receiving token: {str(e)}", exc_info=True)
