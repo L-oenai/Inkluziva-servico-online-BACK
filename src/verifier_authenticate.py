@@ -21,7 +21,7 @@ access_token_url = os.getenv("ACCESS_TOKEN_URL")
 host = os.getenv("HOST")
 username = os.getenv("USERNAME")
 password = os.getenv("PASSWORD")
-port = os.getenv("PORT")
+port = os.getenv("PORT_DB")
 database = os.getenv("DATABASE")
 
 conexao = mysql.connector.connect(
