@@ -65,14 +65,18 @@ def token():
         consumer = oauth.Consumer(consumer_key, consumer_secret)
         
         data = request.json
-        if not data or 'oauth_verifier' not in data:
-            raise ValueError("Token is missing from the request")
+        if not data or 'oauth_verifier' not in data or 'oauth_token' not in data:
+            raise ValueError("oauth_verifier or oauth_token is missing from the request")
 
         oauth_verifier = data['oauth_verifier']
         oauth_token = data['oauth_token']
-        logger.info(f"Token received: {oauth_verifier}")
+        logger.info(f"OAuth verifier received: {oauth_verifier}")
+        logger.info(f"OAuth token received: {oauth_token}")
 
-        return jsonify({"message": "Token received successfully", "token verifier": token, "token": oauth_token}), 200
+        # Process the token here if needed
+        # For example, exchange the oauth_verifier and oauth_token for an access token
+
+        return jsonify({"message": "Token received successfully", "oauth_verifier": oauth_verifier, "oauth_token": oauth_token}), 200
     except Exception as e:
         logger.error(f"Error receiving token: {str(e)}", exc_info=True)
         return jsonify({"error": "An error occurred while processing your request."}), 500
