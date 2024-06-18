@@ -68,13 +68,13 @@ logger = logging.getLogger(__name__)
 ])
 def token():
     try:
-        conexao = mysql.connector.connect(
-            username = username,
-            password = password,
-            host = host,
-            port = port,
-            database = database
-        )
+        # conexao = mysql.connector.connect(
+        #     username = username,
+        #     password = password,
+        #     host = host,
+        #     port = port,
+        #     database = database
+        # )
         
         consumer = oauth.Consumer(consumer_key, consumer_secret)
 
@@ -110,7 +110,7 @@ def token():
         user_id = access_token_data.get('user_id')
         screen_name = access_token_data.get('screen_name')
         
-        cursor = conexao.cursor()
+        # cursor = conexao.cursor()
         
         # print('O Inserindo ID do usuário na tabela new_ids')
         
@@ -119,16 +119,15 @@ def token():
         # conexao.commit()
         # cursor.close()
         
-        cursor.execute("SELECT * FROM new_ids")
-        resultados = cursor.fetchall()
+        # cursor.execute("SELECT * FROM new_ids")
+        # resultados = cursor.fetchall()
 
         return jsonify({
             "message": "Token received successfully",
             "access_token": access_token,
             "access_token_secret": access_token_secret,
             "user_id": user_id,
-            "screen_name": screen_name,
-             "new_ids": resultados
+            "screen_name": screen_name
         }), 200
     except Exception as e:
         logger.error(f"Error receiving token: {str(e)}", exc_info=True)
