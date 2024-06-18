@@ -10,14 +10,6 @@ from flask import Blueprint, request, jsonify
 from flask_cors import cross_origin
 import mysql.connector
 
-conexao = mysql.connector.connect(
-    username = "doadmin",
-    password = "AVNS_wDR8qEr7bfXzypdQpbR",
-    host = "db-mysql-sfo3-51839-do-user-16041953-0.c.db.ondigitalocean.com",
-    port = 25060,
-    database = "defaultdb"
-)
-
 load_dotenv()
 
 # Carregar variáveis de ambiente
@@ -26,6 +18,19 @@ consumer_secret = os.getenv("CONSUMER_SECRET")
 request_token_url = os.getenv("REQUEST_TOKEN_URL")
 authenticate_url = os.getenv("AUTHENTICATE_URL")
 access_token_url = os.getenv("ACCESS_TOKEN_URL")
+HOST = os.getenv("HOST")
+USERNAME = os.getenv("USERNAME")
+PASSWORD = os.getenv("PASSWORD")
+PORT = os.getenv("PORT")
+DATABASES = os.getenv("DATABASES")
+
+conexao = mysql.connector.connect(
+    username = USERNAME,
+    password = PASSWORD,
+    host = HOST,
+    port = PORT,
+    database = DATABASES
+)
 
 auth_bp = Blueprint('auth', __name__)
 
