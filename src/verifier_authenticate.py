@@ -39,13 +39,14 @@ def authenticate():
         content_oauth_token_str = content_oauth_token.decode('utf-8')
         oauth_token_params = urllib.parse.parse_qs(content_oauth_token_str)
         oauth_token = oauth_token_params['oauth_token'][0]
+        # oauth_token_secret = oauth_token_params['oauth_token_secret'][0]
         oauth_verifier_url = f"{authenticate_url}?oauth_token={oauth_token}"
         
         print("Retornando URL de acesso...")
 
         # Redirecionar para a oauth_verifier_url
         print(oauth_verifier_url)
-        return oauth_verifier_url
+        return oauth_verifier_url, 
     except Exception as e:
         return str(e), 500
 
@@ -63,7 +64,6 @@ logger = logging.getLogger(__name__)
 def token():
     try:
         consumer = oauth.Consumer(consumer_key, consumer_secret)
-        client = oauth.Client(consumer)
 
         data = request.json
         if not data or 'oauth_verifier' not in data or 'oauth_token' not in data:
@@ -74,24 +74,36 @@ def token():
         logger.info(f"OAuth verifier received: {oauth_verifier}")
         logger.info(f"OAuth token received: {oauth_token}")
 
-        # Step 1: Exchange oauth_verifier and oauth_token for oauth_token_secret
+        # Step 1: Create a token with the oauth_token received and an empty secret
         token = oauth.Token(oauth_token, "")
         token.set_verifier(oauth_verifier)
         client = oauth.Client(consumer, token)
 
-        resp_oauth_token_access, content_oauth_token_access = client.request(access_token_url, 'POST')
-        if resp_oauth_token_access['status'] != '200':
-            raise Exception('Failed to obtain access token: %s' % resp_oauth_token_access['status'])
+        # Step 2: Request the access token from Twitter
+        resp, content = client.request(access_token_url, "POST")
+        if resp.status != 200:
+            raise Exception('Failed to obtain access token: %s' % resp.status)
 
-        oauth_token_access_str = content_oauth_token_access.decode('utf-8')
-        oauth_token_access_params = urllib.parse.parse_qs(oauth_token_access_str)
-        oauth_token_access_params = {key: value[0] for key, value in oauth_token_access_params.items()}
+        # Step 3: Parse the response
+        content_str = content.decode('utf-8')
+        access_token_data = urllib.parse.parse_qs(content_str)
+        access_token_data = {key: value[0] for key, value in access_token_data.items()}
 
-        user_name = oauth_token_access_params.get('screen_name')
-        if not user_name:
-            raise ValueError("Failed to retrieve the user name")
+        # Access token and secret
+        access_token = access_token_data.get('oauth_token')
+        access_token_secret = access_token_data.get('oauth_token_secret')
 
-        return jsonify({"message": "Token received successfully", "user_name": user_name}), 200
+        # User data
+        user_id = access_token_data.get('user_id')
+        screen_name = access_token_data.get('screen_name')
+
+        return jsonify({
+            "message": "Token received successfully",
+            "access_token": access_token,
+            "access_token_secret": access_token_secret,
+            "user_id": user_id,
+            "screen_name": screen_name
+        }), 200
     except Exception as e:
         logger.error(f"Error receiving token: {str(e)}", exc_info=True)
         return jsonify({"error": "An error occurred while processing your request."}), 500
