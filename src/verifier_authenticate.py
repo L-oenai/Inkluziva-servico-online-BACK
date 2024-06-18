@@ -65,7 +65,7 @@ def token():
         consumer = oauth.Consumer(consumer_key, consumer_secret)
         
         data = request.json
-        if not data or 'token' not in data:
+        if not data or 'oauth_verifier' not in data:
             raise ValueError("Token is missing from the request")
 
         oauth_verifier = data['oauth_verifier']
