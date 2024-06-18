@@ -11,11 +11,11 @@ from flask_cors import cross_origin
 import mysql.connector
 
 conexao = mysql.connector.connect(
-    username = "root",
-    password = "12345",
-    host = "localhost",
-    port = 3306,
-    database = "isg"
+    username = "doadmin",
+    password = "AVNS_wDR8qEr7bfXzypdQpbR",
+    host = "db-mysql-sfo3-51839-do-user-16041953-0.c.db.ondigitalocean.com",
+    port = 25060,
+    database = "defaultdb"
 )
 
 load_dotenv()
