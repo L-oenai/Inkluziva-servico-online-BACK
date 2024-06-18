@@ -22,7 +22,7 @@ host = os.getenv("HOST")
 username = os.getenv("USERNAME")
 password = os.getenv("PASSWORD")
 port = os.getenv("PORT")
-database = os.getenv("DATABASES")
+database = os.getenv("DATABASE")
 
 conexao = mysql.connector.connect(
     username = username,
